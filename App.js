@@ -10,11 +10,11 @@ import SignupScreen from './src/screens/SignupScreen';
 import ENV from './env.json';
 
 const config = {
-  apiKey:            ENV.FIREBASE_API_KEY,
-  authDomain:        ENV.FIREBASE_AUTH_DOMAIN,
-  databaseURL:       ENV.FIREBASE_DB_URL,
-  projectId:         ENV.FOREBASE_PRJ_ID,
-  storageBucket:     ENV.FIREBASE_STORAGE,
+  apiKey: ENV.FIREBASE_API_KEY,
+  authDomain: ENV.FIREBASE_AUTH_DOMAIN,
+  databaseURL: ENV.FIREBASE_DB_URL,
+  projectId: ENV.FOREBASE_PRJ_ID,
+  storageBucket: ENV.FIREBASE_STORAGE,
   messagingSenderId: ENV.FIREBASE_SENDER_ID,
 };
 firebase.initializeApp(config);
