@@ -29,7 +29,6 @@ class MemoEditScreen extends React.Component {
         createdOn: newDate,
       })
       .then(() => {
-        console.log('update success!');
         this.props.navigation.state.params.returnMemo({
           body: this.state.body,
           key: this.state.key,
@@ -37,8 +36,7 @@ class MemoEditScreen extends React.Component {
         });
         this.props.navigation.goBack();
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
       });
   }
 

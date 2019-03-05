@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, TextInput, Text, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, TextInput, Text, TouchableHighlight, TouchableOpacity } from 'react-native';
 import firebase from 'firebase';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 class LoginScreen extends React.Component {
   state = {
@@ -8,16 +9,23 @@ class LoginScreen extends React.Component {
     password: 'password',
   }
 
-  // eslint-disable-next-line
   handleSubmit() {
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then((user) => {
-        console.log('success!', user);
-        this.props.navigation.navigate('Home');
+      .then(() => {
+        const resrtAction = StackActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Home' }),
+          ],
+        });
+        this.props.navigation.dispatch(resrtAction);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
       });
+  }
+
+  handlePress() {
+    this.props.navigation.navigate('Signup');
   }
 
   render() {
@@ -48,6 +56,10 @@ class LoginScreen extends React.Component {
         <TouchableHighlight style={styles.button} onPress={this.handleSubmit.bind(this)} underlayColor="transparent">
           <Text style={styles.buttonTitle}>ログインする</Text>
         </TouchableHighlight>
+
+        <TouchableOpacity style={styles.signup} onPress={this.handlePress.bind(this)}>
+          <Text style={styles.sighnupText}>メンバー登録</Text>
+        </TouchableOpacity>
 
       </View>
     );
@@ -85,6 +97,13 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     color: '#fff',
+    fontSize: 16,
+  },
+  signup: {
+    marginTop: 16,
+    alignSelf: 'center',
+  },
+  sighnupText: {
     fontSize: 16,
   },
 });
