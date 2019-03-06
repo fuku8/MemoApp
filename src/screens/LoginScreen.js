@@ -53,7 +53,7 @@ class LoginScreen extends React.Component {
           secureTextEntry
         />
 
-        <TouchableHighlight style={styles.button} onPress={this.handleSubmit.bind(this)} underlayColor="transparent">
+        <TouchableHighlight style={styles.button} onPress={this.handleSubmit.bind(this)} underlayColor="#c70f66">
           <Text style={styles.buttonTitle}>ログインする</Text>
         </TouchableHighlight>
 
