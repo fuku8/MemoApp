@@ -1,24 +1,43 @@
 import React from 'react';
+import { SecureStore } from 'expo';
 import { StyleSheet, View, TextInput, Text, TouchableHighlight, TouchableOpacity } from 'react-native';
 import firebase from 'firebase';
 import { StackActions, NavigationActions } from 'react-navigation';
+import Loading from '../elements/Loading';
 
 class LoginScreen extends React.Component {
   state = {
     email: '',
     password: '',
+    isLoading: true,
+  }
+
+  async componentDidMount() {
+    const email = await SecureStore.getItemAsync('email');
+    const password = await SecureStore.getItemAsync('password');
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(() => {
+        this.setState({ isLoading: false });
+        this.navigateToHome();
+      });
+  }
+
+  navigateToHome() {
+    const resrtAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Home' }),
+      ],
+    });
+    this.props.navigation.dispatch(resrtAction);
   }
 
   handleSubmit() {
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        const resrtAction = StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Home' }),
-          ],
-        });
-        this.props.navigation.dispatch(resrtAction);
+        SecureStore.setItemAsync('email', this.state.email);
+        SecureStore.setItemAsync('password', this.state.password);
+        this.navigateToHome();
       })
       .catch(() => {
       });
@@ -31,6 +50,7 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Loading isLoading={this.state.isLoading} />
         <Text style={styles.title}>
             ログイン
         </Text>
@@ -60,7 +80,6 @@ class LoginScreen extends React.Component {
         <TouchableOpacity style={styles.signup} onPress={this.handlePress.bind(this)}>
           <Text style={styles.sighnupText}>メンバー登録</Text>
         </TouchableOpacity>
-
       </View>
     );
   }
